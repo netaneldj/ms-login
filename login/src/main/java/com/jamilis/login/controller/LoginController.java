@@ -22,12 +22,23 @@ public class LoginController {
     @Autowired
     private ILoginService service;
 
+    /**
+     * POST /sign-up : POST User. Creates a new user in BCI.
+     * @param dto userDto
+     * @return Success user token (status code 200) or Bad Request (status code 400) or Internal Server Error (status code 500)
+     */
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUpUser(@RequestBody @Valid SignUpRequestDto dto) {
         SignUpResponseDto responseDto = service.signUpUser(dto);
         return new ResponseEntity<SignUpResponseDto>(responseDto, HttpStatus.CREATED);
     }
 
+    /**
+     * GET /login : GET User. Get BCI user by token.
+     * @param token loginToken
+     * @return Success user info (status code 200) or Bad Request (status code 400) or Unauthorized (status code
+     *      401) or Internal Server Error (status code 500)
+     */
     @GetMapping("/login")
     public ResponseEntity<?> loginUser(@AuthenticationPrincipal @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         LoginResponseDto responseDto = service.loginUser(token);

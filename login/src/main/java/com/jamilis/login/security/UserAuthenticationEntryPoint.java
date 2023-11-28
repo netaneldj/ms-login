@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String TOKEN_ERROR_MESSAGE = "Invalid token";
-
     @Override
     public void commence(
             HttpServletRequest request,

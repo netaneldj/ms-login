@@ -22,6 +22,9 @@ public class LoginService implements ILoginService {
     @Autowired
     private UserAuthenticationProvider userAuthenticationProvider;
 
+    /**
+     * See {@link ILoginService#signUpUser(SignUpRequestDto)}
+     */
     @Override
     public SignUpResponseDto signUpUser(SignUpRequestDto signUpRequestDto) {
         if (repository.findByEmailAndIsActiveTrue(signUpRequestDto.getEmail()).isPresent())
@@ -34,6 +37,9 @@ public class LoginService implements ILoginService {
         return signUpResponseDto;
     }
 
+    /**
+     * See {@link ILoginService#loginUser(String)}
+     */
     @Override
     public LoginResponseDto loginUser(String token) {
         UserEntity userEntity = userAuthenticationProvider.getUserByToken(token);
@@ -44,10 +50,5 @@ public class LoginService implements ILoginService {
                 userEntityUpdated.getEmail()));
         loginResponseDto.setToken(userAuthenticationProvider.createToken(userEntityUpdated.getEmail()));
         return loginResponseDto;
-    }
-
-    @Override
-    public UserEntity findUserByEmail(String email) {
-        return repository.findByEmailAndIsActiveTrue(email).orElse(null);
     }
 }

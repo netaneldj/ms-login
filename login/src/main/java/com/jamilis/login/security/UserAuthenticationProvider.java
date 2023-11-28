@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jamilis.login.entity.UserEntity;
-import com.jamilis.login.service.LoginService;
+import com.jamilis.login.repository.IUserRepository;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -26,10 +26,10 @@ public class UserAuthenticationProvider {
     private Long expirationTime;
 
     @Autowired
-    private LoginService loginService;
+    private IUserRepository userRepository;
 
-    public UserAuthenticationProvider(LoginService loginService) {
-        this.loginService = loginService;
+    public UserAuthenticationProvider(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -38,9 +38,9 @@ public class UserAuthenticationProvider {
     }
 
     /**
-     *
-     * @param email
-     * @return
+     * Create login token by email
+     * @param email email
+     * @return login token
      */
     public String createToken(String email) {
         Date now = new Date();
@@ -54,7 +54,7 @@ public class UserAuthenticationProvider {
     }
 
     /**
-     *
+     * Validate login token
      * @param token
      * @return
      */
@@ -62,20 +62,22 @@ public class UserAuthenticationProvider {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decoded = verifier.verify(token);
-        UserEntity user = loginService.findUserByEmail(decoded.getIssuer());
+        UserEntity user = userRepository.findByEmailAndIsActiveTrue(decoded.getIssuer())
+                .orElse(null);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
     /**
-     *
-     * @param token
-     * @return
+     * Get BCI user by token
+     * @param token token
+     * @return user
      */
     public UserEntity getUserByToken(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decoded = verifier.verify(token);
-        return loginService.findUserByEmail(decoded.getIssuer());
+        return userRepository.findByEmailAndIsActiveTrue(decoded.getIssuer())
+                .orElse(null);
     }
 
 }

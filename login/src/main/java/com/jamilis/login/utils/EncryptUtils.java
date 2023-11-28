@@ -17,7 +17,7 @@ public class EncryptUtils {
     private static byte[] key;
 
     /**
-     *
+     * Set secret key
      * @param myKey
      */
     private static void setKey(final String myKey) {
@@ -35,7 +35,7 @@ public class EncryptUtils {
     }
 
     /**
-     *
+     * Encrypt string with secret
      * @param strToEncrypt
      * @param secret
      * @return
@@ -53,7 +53,7 @@ public class EncryptUtils {
     }
 
     /**
-     *
+     * Decrypt string by secret
      * @param strToDecrypt
      * @param secret
      * @return
