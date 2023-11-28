@@ -77,4 +77,7 @@ Diagrama de componentes
 
 Diagramas de secuencia
 ------------------------
+**Diagrama de secuencia sign-up**
+![\[fig:class01\]Diagrama de secuencia sign-up](diagrams/signUpSequenceDiagram.png)
+**Diagrama de secuencia login**
 ![\[fig:class01\]Diagrama de secuencia login](diagrams/loginSequenceDiagram.png)
