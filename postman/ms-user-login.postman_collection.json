@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "74ae6dca-036e-41d6-8f10-e65b78086c6c",
+		"name": "ms-user-login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29840226"
+	},
+	"item": [
+		{
+			"name": "sign-up",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var env = pm.environment.get(\"environment\");\r",
+							"const responseJson = pm.response.json();\r",
+							"const responseToken = responseJson.token;\r",
+							"\r",
+							"pm.environment.set(\"loginToken\", responseToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Example User\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"U01password\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 43219876,\r\n            \"cityCode\": 11,\r\n            \"countryCode\": \"+54\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sign-up",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{loginToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
